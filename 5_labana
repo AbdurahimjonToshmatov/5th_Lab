@@ -1,0 +1,57 @@
+using System;
+
+namespace ConsoleApp1
+{
+    class Program
+    {
+        delegate int Scheme(int[] array);
+
+        static void print_matrix(int[,] matrix, int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                    Console.Write(matrix[i, j] + " ");
+                Console.WriteLine();
+            }
+        }
+
+        static int make_triangle(int[,] matrix, int n, int[] array, bool flag, Scheme sum)
+        {
+            int k = 0;
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                    if (flag && i <= j)
+                        array[k++] = matrix[i, j];
+                    else if (!flag && i >= j)
+                        array[k++] = matrix[i, j];
+
+            return sum(array);
+        }
+
+        static int vector_square(int[] array)
+        {
+            int sum = 0;
+            for (int i = 0; i < array.Length; i++)
+                sum += array[i] * array[i];
+
+
+            return sum;
+        }
+
+        static void Main()
+        {
+            int n = 3;
+            int k = 1;
+            int[] array = new int[n * n];
+            int[,] matrix = new int[n, n];
+
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                    matrix[i, j] = k++;
+            print_matrix(matrix, n);
+            Console.WriteLine(make_triangle(matrix, n, array, true, vector_square));
+            Console.ReadKey();
+        }   
+    }
+}
